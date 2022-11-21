@@ -1,2 +1,2 @@
 # MorhComp
-Composite Materials for Shape Morphing
+Inverse Design Framework for Shape Morphing Composite Materials
