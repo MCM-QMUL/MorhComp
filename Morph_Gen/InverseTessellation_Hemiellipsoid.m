@@ -1,53 +1,141 @@
+clc;
+clear all;
+% close all;
 
-i = 1;
-j = 1;
+a = 1 ; b = 1 ; 
+
 eps      = 0.1; % The inner circle radius
 W0       = 1;
 L0       = 1;
 t0       = 1; t1  = 1;
 N        = 8;  % Number of slices cut
 
-for a = 1:i
-    for b = 1:j
-        [s10, x, E0, w0] = inverse(a,b); 
+
+[s10, x, E0, w0, h0] = inverse(a,b);
+
 
 %             var1 = s10;
 %             var2 = x;
 %             var3 = E0;
 %             var4 = w0;
-        A = max(E0);
-        
-        E0_new = E0'/A;
-        
-        s10_new = s10';
-        
-        x_new = x';
+% me = mean(E0);
+% A= 30;
+% for i = 1:length(E0)
+%     if abs(E0(i)) > A
+%         E0_new(i) = 1;
+%     else
+%         E0_new(i) = abs(E0(i)/A);
+%     end
+%     
+% end
+% E0_new = E0_new';
 
-        w0_new = w0';
+A = max(E0);
 
-        fit1 = fit(x_new,E0_new,'gauss8'); % fourier4
-        coeffs = coeffvalues(fit1)';
-        
-        fit2 = fit(s10_new,w0_new,'fourier3');
-        coeffs2=coeffvalues(fit2)';
-        
-        str1 = append('E_fit_eps_',num2str(eps),'_a_',num2str(a),'_b_',num2str(b),'_N_',num2str(N));
-        str1 = strrep(str1,'.','');
-        
-        str2 = append('w_fit_eps_',num2str(eps),'_a_',num2str(a),'_b_',num2str(b),'_N_',num2str(N));
-        str2 = strrep(str2,'.','');
+E0_new = E0'/A;
+
+m = mean(E0_new);
+
+s10_new = s10';
+mean = trapz(s10_new, E0_new);
+x_new = x';
+w0_new = w0';
+vol = trapz(s10_new*100, w0_new*100)*2*8*2;
+figure(12)
+plot(s10_new*100, w0_new*100);
+
+
+fit1 = fit(x_new,E0_new,'gauss8'); % fourier4 gauss8
+coeffs = coeffvalues(fit1)';
+
+fit2 = fit(s10_new,w0_new,'fourier3');
+coeffs2=coeffvalues(fit2)';
+coeffs2(end+1) = x(1); 
+coeffs2(end+1) = h0(end); 
+str1 = append('E_fit_eps_',num2str(eps),'_a_',num2str(a),'_b_',num2str(b),'_N_',num2str(N));
+str1 = strrep(str1,'.','');
+
+str2 = append('w_fit_eps_',num2str(eps),'_a_',num2str(a),'_b_',num2str(b),'_N_',num2str(N)); % 'w_a_b_075' 'w_fit_eps_',num2str(eps),'_a_',num2str(a),'_b_',num2str(b),'_N_',num2str(N)
+str2 = strrep(str2,'.','');
+
+writematrix(coeffs, str1);
+writematrix(coeffs2, str2);
+
+figure(3)
+plot(s10,E0_new,'r','linewidth',2)
+xlabel('s');ylabel('Modulus(s)');
+title('Modulus distribution')
+
+figure(10)
+plot(s10,E0,'r','linewidth',2)
+xlabel('s');ylabel('Modulus(s)');
+title('Modulus distribution')
+
+Width = 40; 
+Length = 40; 
+Square_Size = 0.5;  
+x_vf = linspace(0,1,Length/Square_Size);
+
+Ef = 40;
+Em = 5;
+Ei = 0.2*Ef;
+
+E_interp = interp1(s10_new,E0_new,x_vf,'spline');
+
+% assuming 50% intermediate material anad 50% rigid material
+% E_new = E_interp - (Ei/Ef);
+% vf_r = (E_new -(Em/Ef))/(1 - (Em/Ef)); 
+% 
+% E_test = (Ei/Ef) + vf_r*(Ef/Ef) + (1-vf_r)*(Em/Ef);
+% rigid = vf_r;
+% 
+% soft = (1-vf_r)*Em/Ef;
+% 
+% figure(11)
+% hold all
+% plot(x, E_interp)
+% plot(x, rigid)
+% plot(x, soft)
+% plot(x, E_new)
+% patch([x fliplr(x)], [E_new fliplr(rigid)], 'g')
+% patch([x fliplr(x)], [zeros(size(x)) fliplr(rigid)], 'b')
+% figure(13)
+% plot(x, soft)
+% 
+% str1 = append('vf_hemi_3mat');
+% str1 = strrep(str1,'.','');
+% 
+% writematrix(vf_r', str1);
+
+
+% for i=1:length(x)
+%     vf_r = (E_interp(i) - vf_s*Em)/(2*Ef);
+%     vf_i = 0.8 - vf_r;
+% end
+
+for i=1:length(x_vf)
     
-        writematrix(coeffs, str1);
-        writematrix(coeffs2, str2);
-    
-
-
-    end 
+    vf(i) = (E_interp(i)-(Em/Ef))/(1-(Em/Ef));
 end
 
+% for i=1:length(x)
+%     if E_interp(i) < Ei/Ef
+%         vf(i) = (E_interp(i)-(Em/Ei))/(1-(Em/Ei));
+%     elseif E_interp(i) > Ei/Ef
+%         vf(i) = (E_interp(i)-(Ei/Ef))/(1-(Ei/Ef));
+%     end
+% end
 
+vf = vf';
 
-function [var1, var2, var3, var4] = inverse(a,b)
+str1 = append('vf_a_b_075');
+str1 = strrep(str1,'.','');
+
+writematrix(vf, str1);
+figure(10)
+plot(x_vf, vf)
+
+function [var1, var2, var3, var4, var5] = inverse(a,b)
 
     % Input parameters
     eps      = 0.1; % The inner circle radius
@@ -56,8 +144,9 @@ function [var1, var2, var3, var4] = inverse(a,b)
     t0       = 1; t1  = 1;
     N        = 8;  % Number of slices cut
 
-    f = ArcLengthofEllipticCurve(a,b);
     % The given shape (curvature distribution)
+    f = ArcLengthofEllipticCurve(a,b);
+
     syms s
     
     a1 = f(1:1);
@@ -115,113 +204,111 @@ function [var1, var2, var3, var4] = inverse(a,b)
     var2 = x;
     var3 = E0;
     var4 = w0;
-    % figure(1)
-    % plot(s10,w0,'*r','linewidth',2)
-    % xlabel('s');ylabel('W(s)');
-    % title('Width distribution')
+    var5 = h0;
+    figure(1)
+    plot(s10,w0,'*r','linewidth',2)
+    xlabel('s');ylabel('W(s)');
+    title('Width distribution')
     
     % figure(2)
     % plot(s10,t0,'b','linewidth',2)
     % xlabel('s');ylabel('T(s)');
     % title('Thickness distribution')
     
-    figure(3)
-    plot(s10,E0,'r','linewidth',2)
-    xlabel('s');ylabel('Modulus(s)');
-    title('Modulus distribution')
+
 %     axis([0 1 0 1])
 %     SaveString = strcat('E_vs_s_eps_',num2str(eps),'_a_b_',num2str(a_b),'_N_',num2str(N),'.txt'); 
 %     save(fullfile(SaveString),'s10','E0','-ascii','-double');
     
-    % figure(4)
-    % plot(x0,h0,'b','linewidth',2)
-    % xlabel('x');ylabel('h');
-    % axis equal;
-    % SaveString = strcat('w_s_data_eps_',num2str(eps),'_a_b_',num2str(a_b),'_N_8.txt'); 
-    % save(fullfile(SaveString),'s10','w0','-ascii','-double');
+    figure(4)
+    plot(x0,h0,'b','linewidth',2)
+    xlabel('x');ylabel('h');
+%     axis equal;
+%     SaveString = strcat('w_s_data_eps_',num2str(eps),'_a_b_',num2str(a_b),'_N_8.txt'); 
+%     save(fullfile(SaveString),'s10','w0','-ascii','-double');
     
     
     
     %% Generate Tesselation Plane
     % Export the geometric coordinates
-    % x1 = fliplr(s10-1-eps);  y1 = fliplr(w0);
-    % x2 = fliplr(x1);       y2 = fliplr(-y1);
+%     x1 = fliplr(s10-1-eps);  y1 = fliplr(w0);
+%     x2 = fliplr(x1);       y2 = fliplr(-y1);
     % X0 = [x1,x2]; Y0 = [y1,y2];
     % % X0 = [x1,x1(end)-0.1,x2(1)-0.1,x2]; Y0 = [y1,y1(end),y2(1),y2];
-    % % X0 = [x1,x2]; Y0 = [y1,y2];
-    % figure(5)
-    % plot(X0,Y0,'b'); axis equal;
-    % 
-    % if mod(N/2,2) == 0
-    % Theta = atan2(X0,Y0)+0*pi/N;% N/2是偶函数
-    % else
-    % Theta = atan2(X0,Y0)+1*pi/N;% N/2是奇函数
-    % end
-    % 
-    % R = sqrt(X0.^2+Y0.^2);
-    % 
-    % XR0 = []; YR0 = [];
-    % for ii = 1:N
-    %     angle  = ii*2*pi/N;
-    %     Theta2 = Theta-angle;
-    %     XR     = R.*cos(Theta2);
-    %     YR     = R.*sin(Theta2);
-    %     XR0    = cat(2,XR0,XR(1:end-1));
-    %     YR0    = cat(2,YR0,YR(1:end-1));
-    % end
-    % figure(6)
-    % plot(XR0,YR0,'-b','linewidth',2);axis equal;
-    % length(XR0)
+%     X0 = [x1,x2]; Y0 = [y1,y2];
+%     figure(5)
+%     plot(X0,Y0,'b'); axis equal;
+    
+%     if mod(N/2,2) == 0
+%     Theta = atan2(X0,Y0)+0*pi/N;% N/2是偶函数
+%     else
+%     Theta = atan2(X0,Y0)+1*pi/N;% N/2是奇函数
+%     end
+%     % 
+%     R = sqrt(X0.^2+Y0.^2);
+%     
+%     XR0 = []; YR0 = [];
+%     for ii = 1:N
+%         angle  = ii*2*pi/N;
+%         Theta2 = Theta-angle;
+%         XR     = R.*cos(Theta2);
+%         YR     = R.*sin(Theta2);
+%         XR0    = cat(2,XR0,XR(1:end-1));
+%         YR0    = cat(2,YR0,YR(1:end-1));
+%     end
+%     figure(6)
+%     plot(XR0,YR0,'-b','linewidth',2);axis equal;
+%     length(XR0)
     % SaveString = strcat('XR_vs_YR_eps_',num2str(eps),'_a_b_',num2str(a_b),'_N_',num2str(N),'.txt'); 
     % save(fullfile(SaveString),'XR0','YR0','-ascii','-double');
     
     %% Plot 3D shape
-%     h    = (h0);
+    h    = (h0);
 %     
-%     L    = max(x);
-%     y    = linspace(-tan(pi/N)*L, tan(pi/N)*L, length(x));
-%     X    = repmat(x, length(y), 1);
-%     Y    = repmat(y', 1, length(x));
-%     Z    = repmat(h, length(y), 1);
+    L    = max(x);
+    y    = linspace(-tan(pi/N)*L, tan(pi/N)*L, length(x));
+    X    = repmat(x, length(y), 1);
+    Y    = repmat(y', 1, length(x));
+    Z    = repmat(h, length(y), 1);
 %     
 %     Z(find(abs(Y)>(tan(pi/N).*(X)))) = NaN; % this sets the width of the beam
     
-    % figure(7)
-    % subplot 121
-    % plot(x, h)
-    % xlabel('x')
-    % ylabel('h')
-    % legend('Shape fo the elastica')
-    % 
-    % subplot 122
-    % plot(s10, w0)
-    % hold on
-    % plot(s10, tan(pi/N).*(s10(end:-1:1)+eps), 'k--')
-    % xlabel('s')
-    % ylabel('w')
-    % legend('Shape of the strip','Shape of ''flat branch''')
-    % 
-    % % Plot one strip
-    % figure(8)
-    % surf(X, Y, Z)
-    % hold on
-    % 
-    % % Plot the other strips by rotating the first one
-    % Theta = atan2(Y,X);
-    % R = sqrt(X.^2+Y.^2);
-    % for ii = 1:N
-    %     angle = ii*2*pi/N;
-    %     Theta2 = Theta+angle;
-    %     X2 = R.*cos(Theta2);
-    %     Y2 = R.*sin(Theta2);
-    %     
-    %     surf(X2, Y2, Z)
-    % %     light('position',[2,2,2],'style','local')
-    %     rotate3d on;
-    % end
-    % title('3D shape of tesselated dome')
-    % shading interp
-    % axis equal
+    figure(7)
+    subplot 121
+    plot(x, h)
+    xlabel('x')
+    ylabel('h')
+    legend('Shape fo the elastica')
+    
+    subplot 122
+    plot(s10, w0)
+    hold on
+    plot(s10, tan(pi/N).*(s10(end:-1:1)+eps), 'k--')
+    xlabel('s')
+    ylabel('w')
+    legend('Shape of the strip','Shape of ''flat branch''')
+    
+    % Plot one strip
+    figure(8)
+    surf(X, Y, Z)
+%     hold on
+    
+    % Plot the other strips by rotating the first one
+    Theta = atan2(Y,X);
+    R = sqrt(X.^2+Y.^2);
+    for ii = 1:N
+        angle = ii*2*pi/N;
+        Theta2 = Theta+angle;
+        X2 = R.*cos(Theta2);
+        Y2 = R.*sin(Theta2);
+        
+        surf(X2, Y2, Z)
+    %     light('position',[2,2,2],'style','local')
+        rotate3d on;
+    end
+    title('3D shape of tesselated dome')
+    shading interp
+    axis equal
 
 end 
         
