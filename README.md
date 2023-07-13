@@ -13,7 +13,7 @@ Shape-morphing structures possess the ability to change their shapes from one st
 
 ## Reference
 
-Kansaraa, H., Liu, M. * , He, Y., Tan, W. * (2023). Inverse design and additive manufacturing of shape-morphing structures based on functionally graded composites. J Mech. Phys. Solids, Accepted.
+Kansara, H., Liu, M. * , He, Y., Tan, W. * (2023). Inverse design and additive manufacturing of shape-morphing structures based on functionally graded composites. J Mech. Phys. Solids, Accepted.
 
 ## Acknowledgement
 Wei Tan acknowledges the financial support from the EPSRC New Investigator Award (grant No. EP/V049259/1). Mingchao Liu acknowledges the support from the Nanyang Technological University via the Presidential Postdoctoral Fellowship.
