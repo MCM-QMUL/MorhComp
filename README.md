@@ -2,6 +2,7 @@
 Inverse Design Framework for Shape Morphing Composite Materials
 
 First author: Hirak Kansara
+
 Corresponding authors: wei.tan@qmul.ac.uk (Wei Tan), mingchao.liu@ntu.edu.sg (Mingchao Liu)
 
 ## Title
