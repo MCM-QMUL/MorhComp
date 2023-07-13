@@ -1,4 +1,4 @@
-![MicrosoftTeams-image](https://github.com/MCM-QMUL/MorhComp/assets/105063133/50e47838-9c1c-42b6-b0cd-a1b22a53228c)# MorhComp
+# MorhComp
 Inverse Design Framework for Shape Morphing Composite Materials
 
 ## Title
