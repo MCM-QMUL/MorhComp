@@ -1,6 +1,8 @@
 # MorhComp
 Inverse Design Framework for Shape Morphing Composite Materials
 
+Corresponding authors: wei.tan@qmul.ac.uk (Wei Tan), mingchao.liu@ntu.edu.sg (Mingchao Liu)
+
 ## Title
 Inverse design and additive manufacturing of shape-morphing structures based on functionally graded composites
 
