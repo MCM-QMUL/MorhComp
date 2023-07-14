@@ -16,9 +16,12 @@ Shape-morphing structures possess the ability to change their shapes from one st
 ## Usage of the scripts
 
 ### Morph_Gen
-
+To generate a FEM model using the framework:
+1. Use MATLAB files to generate the volume fraction and width distribution as .txt files.
+2. Run 'Shell_morph.py' or 'Discretised_morph.py' to generate either solid or shell-based geometries in ABAQUS.
 
 ### STL_Gen
+.stl files can be generated using the 'translate_merge_stl.py' script. To generate the axisymmetric geometry, one must fit the width and modulus distribution using a function, ideally Fourier series and vary the magnitude of coefficients accordingly.
 
 ## Reference
 
