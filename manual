@@ -1,3 +1,0 @@
-To generate a FEM model using the framework:
-1. Use MATLAB files to generate the volume fraction and width distribution as .txt files.
-2. Run 'Shell_morph.py' or 'Discretised_morph.py' to generate either solid or shell-based geometries in ABAQUS.
