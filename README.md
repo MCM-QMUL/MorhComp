@@ -27,7 +27,9 @@ To generate a FEM model using the framework:
 
 ## Reference
 
-Kansara, H., Liu, M. * , He, Y., Tan, W. * (2023). Inverse design and additive manufacturing of shape-morphing structures based on functionally graded composites. J Mech. Phys. Solids, Accepted.
+If you find this work useful or use this code, please cite the reference below:
+
+Kansara, H., Liu, M. * , He, Y., Tan, W. * (2023). Inverse design and additive manufacturing of shape-morphing structures based on functionally graded composites. J Mech. Phys. Solids, 105382.
 
 ## Acknowledgement
 Wei Tan acknowledges the financial support from the EPSRC New Investigator Award (grant No. EP/V049259/1). Mingchao Liu acknowledges the support from the Nanyang Technological University via the Presidential Postdoctoral Fellowship.
