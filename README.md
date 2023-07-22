@@ -5,7 +5,8 @@ First author: Hirak Kansara
 
 Corresponding authors: wei.tan@qmul.ac.uk (Wei Tan), mingchao.liu@ntu.edu.sg (Mingchao Liu)
 
-## Title
+
+## Graphical abstract
 Inverse design and additive manufacturing of shape-morphing structures based on functionally graded composites
 
 ![graphical_abstract_d2](https://github.com/MCM-QMUL/MorhComp/assets/105063133/1c6632c2-930f-4762-9ba8-5344d22db57d)
