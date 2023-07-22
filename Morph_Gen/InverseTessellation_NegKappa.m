@@ -1,3 +1,7 @@
+% Matlab code to generate discretised morphing structure
+% This code was developed by Hirak Kansara 
+% Corresponding author: Wei Tan (wei.tan@qmul.ac.uk), Liu Mingchao (mingchao.liu@ntu.edu.sg)
+
 clear all; close all;
 clc
 % Input parameters
@@ -112,9 +116,9 @@ figure(5)
 plot(X0,Y0,'b'); axis equal;
 
 if mod(N/2,2) == 0
-Theta = atan2(X0,Y0)+0*pi/N;% N/2ÊÇÅ¼º¯Êý
+Theta = atan2(X0,Y0)+0*pi/N;% N/2ÃŠÃ‡Ã…Â¼ÂºÂ¯ÃŠÃ½
 else
-Theta = atan2(X0,Y0)+1*pi/N;% N/2ÊÇÆæº¯Êý
+Theta = atan2(X0,Y0)+1*pi/N;% N/2ÃŠÃ‡Ã†Ã¦ÂºÂ¯ÃŠÃ½
 end
 
 R = sqrt(X0.^2+Y0.^2);
