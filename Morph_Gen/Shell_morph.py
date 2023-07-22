@@ -1,3 +1,7 @@
+# Matlab code to generate discretised morphing structure
+# This code was developed by Hirak Kansara 
+# Corresponding author: Wei Tan (wei.tan@qmul.ac.uk), Liu Mingchao (mingchao.liu@ntu.edu.sg)
+ 
 from __future__ import division
 from part import *
 from material import *
