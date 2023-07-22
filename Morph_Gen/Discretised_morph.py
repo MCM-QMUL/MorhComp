@@ -1,6 +1,6 @@
 # Python code to generate discretised morphing structure
 # This code was written by Hirak Kansara 
-# Corresponding author: wei.tan@qmul.ac.uk
+# Corresponding author: Wei Tan (wei.tan@qmul.ac.uk), Liu Mingchao (mingchao.liu@ntu.edu.sg)
 
 from __future__ import division
 from part import *
